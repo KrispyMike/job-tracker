@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Detail</title>
+</head>
+<body>
+    <h1>{{ job.job_name }} ({{ job.job_number }})</h1>
+    <p><strong>Client:</strong> {{ job.client }}</p>
+    <p><strong>Contract Amount:</strong> ${{ "%.2f"|format(job.contract_amount) }}</p>
+
+    <h2>Estimated vs Actual</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th></th>
+            <th>Estimated</th>
+            <th>Actual</th>
+            <th>% Used</th>
+        </tr>
+        <tr>
+            <td>Labor Cost</td>
+            <td>${{ "%.2f"|format(est_labor_cost) }}</td>
+            <td>${{ "%.2f"|format(total_labor_cost) }}</td>
+            <td>{{ "%.1f"|format(labor_percent_used) }}%</td>
+        </tr>
+        <tr>
+            <td>Material Cost</td>
+            <td>${{ "%.2f"|format(job.est_material_cost) }}</td>
+            <td>${{ "%.2f"|format(total_material_cost) }}</td>
+            <td>{{ "%.1f"|format(material_percent_used) }}%</td>
+        </tr>
+        <tr>
+            <td>Total Cost</td>
+            <td>${{ "%.2f"|format(est_total_cost) }}</td>
+            <td>${{ "%.2f"|format(total_actual_cost) }}</td>
+            <td>{{ "%.1f"|format(percent_used) }}%</td>
+        </tr>
+        <tr>
+            <td>Margin</td>
+            <td>${{ "%.2f"|format(est_margin) }}</td>
+            <td>${{ "%.2f"|format(actual_margin) }}</td>
+            <td>-</td>
+        </tr>
+    </table>
+
+    <h2>Add Daily Report</h2>
+    <form method="POST">
+        <p>
+            Date:<br>
+            <input type="date" name="date" required>
+        </p>
+        <p>
+            Crew Size:<br>
+            <input type="number" step="0.1" name="crew_size" required>
+        </p>
+        <p>
+            Hours Worked:<br>
+            <input type="number" step="0.1" name="hours" required>
+        </p>
+        <p>
+            Material Cost:<br>
+            <input type="number" step="0.01" name="material_cost" required>
+        </p>
+        <p>
+            Notes:<br>
+            <input type="text" name="notes">
+        </p>
+        <button type="submit">Add Report</button>
+    </form>
+
+    <h2>Daily Reports</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Date</th>
+            <th>Crew</th>
+            <th>Hours</th>
+            <th>Total Working Hours</th>
+            <th>Material</th>
+            <th>Notes</th>
+        </tr>
+        {% for r in reports %}
+        <tr>
+            <td>{{ r.date }}</td>
+            <td>{{ r.crew_size }}</td>
+            <td>{{ r.hours }}</td>
+            <td>{{ r.crew_size * r.hours }}</td>
+            <td>${{ "%.2f"|format(r.material_cost) }}</td>
+            <td>{{ r.notes }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Totals</h3>
+    <p><strong>Total Working Hours:</strong> {{ total_hours }}</p>
+    <p><strong>Total Labor Cost:</strong> ${{ "%.2f"|format(total_labor_cost) }}</p>
+    <p><strong>Total Material Cost:</strong> ${{ "%.2f"|format(total_material_cost) }}</p>
+    <p><strong>Total Actual Cost:</strong> ${{ "%.2f"|format(total_actual_cost) }}</p>
+
+    <p><strong>Labor % of Budget Used:</strong> {{ "%.1f"|format(labor_percent_used) }}%</p>
+    <p><strong>Material % of Budget Used:</strong> {{ "%.1f"|format(material_percent_used) }}%</p>
+    <p><strong>Overall % of Budget Used:</strong> {{ "%.1f"|format(percent_used) }}%</p>
+
+    <br>
+    <a href="/">← Back to Job List</a>
+</body>
+</html>

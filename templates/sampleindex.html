@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Tracker</title>
+</head>
+<body>
+
+<h1>Job Tracker</h1>
+
+<h2>Create New Job</h2>
+<form method="POST">
+    <input name="job_name" placeholder="Job Name" required><br>
+    <input name="job_number" placeholder="Job Number" required><br>
+    <input name="client" placeholder="Client" required><br>
+    <input name="contract_amount" placeholder="Contract Amount" type="number" step="0.01" required><br>
+    <input name="est_labor_hours" placeholder="Estimated Labor Hours" type="number" step="0.01" required><br>
+    <input name="est_material_cost" placeholder="Estimated Material Cost" type="number" step="0.01" required><br>
+    <button type="submit">Save Job</button>
+</form>
+
+<h2>Jobs</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Job</th>
+        <th>Contract</th>
+        <th>Details</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+        <td>{{ job.job_name }}</td>
+        <td>${{ "{:,.2f}".format(job.contract_amount) }}</td>
+        <td><a href="/job/{{ job.id }}">View</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
