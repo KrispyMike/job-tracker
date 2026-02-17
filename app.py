@@ -144,6 +144,8 @@ def init_db():
 
     conn.close()
 
+# Initialize database when app starts (important for Render)
+init_db()
+
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    app.run()
